@@ -7,7 +7,7 @@
         <div class="slim-pageheader">
             <ol class="breadcrumb slim-breadcrumb">
                 <li class="breadcrumb-item"><a href="/">Главная</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('users') }}">Услуги</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('privileges') }}">Услуги</a></li>
                 <li class="breadcrumb-item active" aria-current="page">{{ $model->title }}</li>
             </ol>
             <h6 class="slim-pagetitle">@yield('title')</h6>
@@ -58,7 +58,7 @@
             </div><!-- col-8 -->
 
             <div class="col-lg-4 mg-t-20 mg-lg-t-0">
-                @auth('admin')
+                @if(auth()->user()->hasRole(\App\Models\User::ROLE_ADMIN))
                     <div class="card pd-25 mb-4">
 
                         <a class="btn btn-warning btn-block"

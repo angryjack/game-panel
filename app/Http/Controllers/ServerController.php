@@ -33,7 +33,8 @@ class ServerController extends Controller
      */
     public function index()
     {
-        return view('server.index');
+        $list = $this->serverService->get();
+        return view('server.index', compact('list'));
     }
 
     /**

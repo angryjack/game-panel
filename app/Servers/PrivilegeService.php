@@ -19,7 +19,8 @@ class PrivilegeService
                     ->where('title', 'like', "%$search%")
                     ->orWhere('flags', 'like', "%$search%");
             })
-            ->orderBy('id', 'desc')->paginate(50);
+            ->orderBy('id', 'desc')
+            ->paginate(50);
 
         return $list;
     }
@@ -34,51 +35,44 @@ class PrivilegeService
         return $server->privileges()->where('status', 1)->get();
     }
 
-    public function store(Request $request)
+    public function store(array $data)
     {
-        $validationRules = [
-            'title' => 'required',
-            'flags' => 'required',
-            'server_id' => 'required',
-        ];
-        $this->validate($request, $validationRules);
-
-        $model = Privilege::find($request->input('id', 0));
+        $model = Privilege::where('id', $data['id'] ?? 0)->first();
 
         if ($model === null) {
             $model = new Privilege();
         }
 
         $model->status = 0;
-        $model->fill($request->all());
+        $model->fill($data);
         $model->save();
 
-        $rates = $request->input('rates', '');
+        if (isset($data['rates'])) {
 
-        $rates = explode(',', $rates);
+            $rates = explode(',', $data['rates']);
 
-        //todo подумать об синхронизации
-        PrivilegeRate::where('privilege_id', $model->id)->delete();
+            PrivilegeRate::where('privilege_id', $model->id)->delete();
 
-        foreach ($rates as $rate) {
-            $rate = explode('-', $rate);
-            if (!isset($rate[0], $rate[1])) {
-                continue;
+            foreach ($rates as $rate) {
+                $rate = explode('-', $rate);
+                if (!isset($rate[0], $rate[1])) {
+                    continue;
+                }
+                $term = (int)$rate[0];
+                $price = (int)$rate[1];
+
+                if (!is_int($price) || !is_int($term) || $term < 0 || $price < 1) {
+                    continue;
+                }
+
+                $rate = PrivilegeRate::firstOrCreate([
+                    'privilege_id' => $model->id,
+                    'term' => $term,
+                    'price' => $price
+                ]);
+
+                $model->rates()->save($rate);
             }
-            $term = (int)$rate[0];
-            $price = (int)$rate[1];
-
-            if (!is_int($price) || !is_int($term) || $term < 0 || $price < 1) {
-                continue;
-            }
-
-            $rate = PrivilegeRate::firstOrCreate([
-                'privilege_id' => $model->id,
-                'term' => $term,
-                'price' => $price
-            ]);
-
-            $model->rates()->save($rate);
         }
 
         return $model;

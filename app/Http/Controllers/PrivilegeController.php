@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PrivilegeCreate;
 use App\Models\Privilege;
 use App\Services\PrivilegeService;
 use App\Services\ServerService;
@@ -51,9 +52,10 @@ class PrivilegeController extends Controller
         return view('privilege.edit', compact('model', 'servers'));
     }
 
-    public function store(Request $request)
+    public function store(PrivilegeCreate $request)
     {
-        $model = $this->privilegeService->store($request);
+        $data = $request->all();
+        $model = $this->privilegeService->store($data);
         return redirect()->route('privileges.show', ['id' => $model->id]);
     }
 

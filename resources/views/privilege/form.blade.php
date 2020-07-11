@@ -1,4 +1,5 @@
 <form action="{{ route('privileges.store') }}" method="post">
+    @csrf
     @if($model->id)
         <input type="text" name="id" value="{{ $model->id }}" hidden>
     @endif
@@ -6,9 +7,10 @@
         <div class="col-md-6 col-lg-4">
             <div class="form-group">
                 <label class="form-control-label">Название: <span class="tx-danger">*</span></label>
-                <input class="form-control" type="text" name="title" placeholder="Укажите название"
+                <input class="form-control @error('title') is-invalid @enderror" type="text" name="title" placeholder="Укажите название"
                        value="{{ $model->title }}"
                        required>
+                @error('title')<div class="alert alert-danger">{{ $message }}</div>@enderror
             </div>
 
             <div class="form-group">
@@ -16,6 +18,7 @@
                 <input class="form-control" type="text" name="flags" placeholder="Укажите флаги доступа"
                        value="{{ $model->flags }}"
                        required>
+                @error('flags')<div class="alert alert-danger">{{ $message }}</div>@enderror
             </div>
 
             <div class="form-group">
@@ -27,14 +30,14 @@
                         >{{ $server->hostname }}</option>
                     @endforeach
                 </select>
+                @error('server_id')<div class="alert alert-danger">{{ $message }}</div>@enderror
             </div>
 
             <div class="form-group">
                 <label class="ckbox">
                     <input type="checkbox" name="status"
                            value="1"
-                           @if ($model->status === 1) checked @endif
-                    >
+                           @if ($model->status === 1) checked @endif>
                     <span>Доступно для покупки</span>
                 </label>
             </div>
@@ -53,10 +56,12 @@
             <div class="form-group">
                 <label class="form-control-label">Описание:</label>
                 <textarea name="description" rows="16" class="form-control editor">{{ $model->description }}</textarea>
+                @error('description')<div class="alert alert-danger">{{ $message }}</div>@enderror
             </div>
             <div class="form-group">
                 <label class="form-control-label">Инструкции:</label>
                 <textarea name="instruction" rows="16" class="form-control editor">{{ $model->instruction }}</textarea>
+                @error('instruction')<div class="alert alert-danger">{{ $message }}</div>@enderror
             </div>
         </div>
     </div>

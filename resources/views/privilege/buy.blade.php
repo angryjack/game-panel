@@ -52,13 +52,13 @@
                         <label class="form-control-label">Почта: <span class="tx-danger">*</span></label>
                         <input class="form-control" name="email"
                                placeholder="Укажите почту" type="email" required=""
-                               @auth value="{{ auth()->user()->email }}" disabled @endif>
+                               @auth value="{{ Auth::user()->email }}" disabled @endif>
                     </div>
                     <div class="form-group wd-xs-300">
                         <label class="form-control-label">Ник: <span class="tx-danger">*</span></label>
                         <input class="form-control" name="nickname"
                                placeholder="Укажите ник" type="text" required=""
-                               @auth value="{{ auth()->user()->nickname }}" disabled @endif>
+                               @auth value="{{ Auth::user()->nickname }}" disabled @endif>
                     </div>
                 </section>
                 <h3>Правила проекта</h3>

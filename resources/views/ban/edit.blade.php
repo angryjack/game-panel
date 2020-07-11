@@ -15,6 +15,7 @@
 
         <div class="section-wrapper">
             <form class="form-layout" action="{{ route('bans.update') }}" method="post">
+                @csrf
                 <div class="row mg-b-25">
                     <div class="col-lg-4">
                         <ul class="list-group">

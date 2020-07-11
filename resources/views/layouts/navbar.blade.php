@@ -1,41 +1,42 @@
 @php
 
-use App\Models\User;
+    use Illuminate\Support\Facades\Request;
 
-$menu = [
-    [
-        'href' => '',
-        'title' => 'Главная',
-        'icon' => 'home'
-    ],
-    /*[
-        'href' => 'bans',
-        'title' => 'Бан-лист',
-        'icon' => 'list'
-    ],*/
-    [
-        'href' => 'users',
-        'title' => 'Пользователи',
-        'icon' => 'people',
-        'role' => User::ROLE_ADMIN
-    ],
-    /*[
-        'href' => 'donations',
-        'title' => 'Пожертвования',
-        'icon' => 'heart'
-    ],*/
-    [
-        'href' => 'servers',
-        'title' => 'Сервера',
-        'icon' => 'game-controller-b'
-    ],
-    [
-        'href' => 'privileges',
-        'title' => 'Привилегии',
-        'icon' => 'gear',
-        'role' => User::ROLE_ADMIN,
-    ],
-];
+    $menu = [
+        [
+            'href' => '',
+            'title' => 'Главная',
+            'icon' => 'home'
+        ],
+        /*[
+            'href' => 'bans',
+            'title' => 'Бан-лист',
+            'icon' => 'list'
+        ],*/
+        [
+            'href' => 'users',
+            'title' => 'Пользователи',
+            'icon' => 'people',
+            'role' => \App\Models\User::ROLE_ADMIN
+        ],
+        /*[
+            'href' => 'donations',
+            'title' => 'Пожертвования',
+            'icon' => 'heart'
+        ],*/
+        [
+            'href' => 'servers',
+            'title' => 'Сервера',
+            'icon' => 'game-controller-b'
+        ],
+        [
+            'href' => 'privileges',
+            'title' => 'Привилегии',
+            'icon' => 'gear',
+            'role' => \App\Models\User::ROLE_ADMIN,
+        ],
+    ];
+
 @endphp
 
 <div class="slim-navbar">

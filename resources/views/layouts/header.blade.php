@@ -7,18 +7,18 @@
         </div><!-- slim-header-left -->
         <div class="slim-header-right">
             <div class="dropdown dropdown-c">
-                <a id="header-dropdown-toggle" class="logged-user">
+                <a href="#" class="logged-user" data-toggle="dropdown">
                     <img src="https://via.placeholder.com/500x500" alt="">
                     <span>
                         @auth
-                            {{ auth()->user()->nickname }}
+                            {{ Auth::user()->nickname }}
                         @else
                             Гость
                         @endif
                     </span>
                     <i class="fa fa-angle-down"></i>
                 </a>
-                <div id="header-dropdown" class="dropdown-menu dropdown-menu-right">
+                <div class="dropdown-menu dropdown-menu-right">
                     <nav class="nav">
                         @auth
                             <a href="{{ route('profile') }}" class="nav-link"><i class="icon ion-person"></i>Профиль</a>

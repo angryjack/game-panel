@@ -2,13 +2,20 @@
 
 use App\Models\User;
 
+/** @var $router \Illuminate\Routing\Router */
+
+
+//Route::group(['middleware' => ['auth', 'role:admin']], function () {});
+//Route::prefix('/user')->group(function () {});
+
+
 //Сайт
-$router->get('/', ['as' => 'home', 'uses' => 'SiteController@index']);
+$router->get('/', 'SiteController@index')->name('home');
 
 //Вход-выход
-$router->get('login', ['as' => 'login', 'uses' => 'LoginController@loginPage']);
-$router->post('login', ['as' => 'login', 'uses' => 'LoginController@login']);
-$router->get('logout', ['as' => 'logout', 'uses' => 'LoginController@login']);
+$router->get('login', 'LoginController@loginPage')->name('login');
+$router->post('login', 'LoginController@login')->name('login');
+$router->get('logout', 'LoginController@logout')->name('logout');
 
 // профиль
 $router->group(['prefix' => 'profile'], function () use ($router) {

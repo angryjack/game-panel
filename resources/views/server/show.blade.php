@@ -63,7 +63,7 @@
             </div><!-- col-8 -->
 
             <div class="col-lg-4 mg-t-20 mg-lg-t-0">
-                @auth('admin')
+                @if(auth()->user()->hasRole(\App\Models\User::ROLE_ADMIN))
                     <div class="card pd-25 mb-4">
 
                         <a class="btn btn-warning btn-block"
@@ -79,7 +79,7 @@
                             <div class="media">
                                 <div class="media-body mg-t-4 d-flex justify-content-between">
                                     <h6 class="tx-14 tx-gray-700 w-100">{{ $player['Name'] }}</h6>
-                                    <span class="d-block ml-2">{{ $player['Frags'] }}</span>
+                                    <span class="d-block mx-4">{{ $player['Frags'] }}</span>
                                     <span class="d-block w-25 text-right">{{ $player['TimeF'] }}</span>
                                 </div>
                             </div>

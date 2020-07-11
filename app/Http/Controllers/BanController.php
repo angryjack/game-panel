@@ -19,7 +19,8 @@ class BanController extends Controller
 
     public function index()
     {
-        return view('ban.index');
+        $list = $this->banService->search('');
+        return view('ban.index', compact('list'));
     }
 
     public function search(Request $request)

@@ -15,25 +15,21 @@ $('.do-login').on('click', function () {
         addErrors('Пожалуйста, введите логин и пароль.');
         return;
     }
+    let data = {
+        login: login,
+        password: password
+    };
 
-    $.ajax({
-        method: 'post',
-        url: $('form').attr('action'),
-        data: {
-            login: login,
-            password: password
-        },
-        success: function (response) {
+    axios.post($('form').attr('action'), data)
+        .then((r) => {
             window.location.href = '/profile';
-        },
-        error: function () {
+        })
+        .catch((e) => {
             addErrors('Логин или пароль указан неверно.');
-        }
-    });
+        });
 });
 
-function addErrors(message)
-{
+function addErrors(message) {
     $errorContainer.html(message);
     $btn.addClass('disabled');
     $login.addClass('parsley-error')
@@ -41,8 +37,7 @@ function addErrors(message)
     $login.select();
 }
 
-function removeErrors()
-{
+function removeErrors() {
     $errorContainer.html('');
     $btn.removeClass('disabled');
     $login.removeClass('parsley-error')
