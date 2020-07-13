@@ -19,6 +19,15 @@ Artisan::command('inspire', function () {
 })->describe('Display an inspiring quote');
 
 
-Artisan::command('init', function () {
-
+Artisan::command('user:create {user} {password}', function ($user, $password) {
+    \App\Models\User::create([
+        'username' => $user,
+        'email' => $user . '@example.com',
+        'password' => md5($password),
+        'access' => 'a',
+        'flags' => 'a',
+        'steamid' => 'STEAM_00',
+        'nickname' => $user,
+        'role' => \App\Models\User::ROLE_ADMIN,
+    ]);
 });

@@ -92,7 +92,7 @@
                         <h6 class="slim-card-title">Обновить информацию</h6>
 
                         <div class="form-group">
-                            <label class="form-control-label">Ник</label>
+                            <label class="form-control-label">Steam ID / IP / Ник</label>
                             <input type="text" name="nickname" class="form-control" value="{{ $model->steamid }}" required>
                             <p class="errors parsley-errors-list mt-2"></p>
                         </div>

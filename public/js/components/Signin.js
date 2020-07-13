@@ -1,22 +1,22 @@
-let $login = $('input[name="login"]');
+let $email = $('input[name="email"]');
 let $password = $('input[name="password"]');
 let $btn = $('.btn-signin');
 let $errorContainer = $('.error-container');
 
-$login.on('keyup', removeErrors);
+$email.on('keyup', removeErrors);
 $password.on('keyup', removeErrors);
 
 
 $('.do-login').on('click', function () {
-    let login = $login.val();
+    let email = $email.val();
     let password = $password.val();
 
-    if (login.length < 2 || password.length < 5) {
+    if (email.length < 2 || password.length < 5) {
         addErrors('Пожалуйста, введите логин и пароль.');
         return;
     }
     let data = {
-        login: login,
+        email: email,
         password: password
     };
 
@@ -32,14 +32,14 @@ $('.do-login').on('click', function () {
 function addErrors(message) {
     $errorContainer.html(message);
     $btn.addClass('disabled');
-    $login.addClass('parsley-error')
-    $password.addClass('parsley-error')
-    $login.select();
+    $email.addClass('parsley-error');
+    $password.addClass('parsley-error');
+    $email.select();
 }
 
 function removeErrors() {
     $errorContainer.html('');
     $btn.removeClass('disabled');
-    $login.removeClass('parsley-error')
-    $password.removeClass('parsley-error')
+    $email.removeClass('parsley-error');
+    $password.removeClass('parsley-error');
 }

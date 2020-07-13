@@ -113,10 +113,9 @@ $(function () {
         $selectServer.parent().removeClass('has-danger');
         $('a[href="#next"]').parent().addClass('disabled');
 
-        $.ajax({
-            method: 'post',
-            url: '/privileges/server/' + server,
-            success: function (response) {
+        axios.post(`/privileges/server/${server}`)
+            .then(r => {
+                let response = r.data;
                 $content.html(response.server.description);
                 $rules.html(response.server.rules);
                 let options = '<option selected disabled>Выберите услугу</option>';
@@ -125,18 +124,16 @@ $(function () {
                 });
                 $selectPrivilege.html(options);
                 $selectPrivilege.parent().show();
-            }
-        });
+            });
     });
     $selectPrivilege.on('select2:select', function (e) {
         let privilege = $selectPrivilege.val();
         $selectPrivilege.parent().removeClass('has-danger');
         $('a[href="#next"]').parent().addClass('disabled');
 
-        $.ajax({
-            method: 'post',
-            url: '/privileges/' + privilege + '/terms',
-            success: function (response) {
+        axios.post(`/privileges/${privilege}/terms`)
+            .then(r => {
+                let response = r.data;
                 $content.html(response.content);
                 let options = '<option selected disabled>Выберите срок</option>';
                 response.terms.forEach(function (item, i, arr) {
@@ -148,8 +145,7 @@ $(function () {
                 });
                 $selectRate.html(options);
                 $selectRate.parent().show();
-            }
-        });
+            });
     });
     $selectRate.on('select2:select', function (e) {
         $selectRate.parent().removeClass('has-danger');
