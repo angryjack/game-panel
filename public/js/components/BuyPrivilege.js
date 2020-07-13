@@ -65,36 +65,36 @@ $(function () {
             var nickname = $('input[name="nickname"]').val();
             var email = $('input[name="email"]').val();
 
-            $.ajax({
-                method: 'post',
-                url: '/payment/redirect',
-                data: {
-                    server: server,
-                    privilege: privilege,
-                    rate: rate,
-                    nickname: nickname,
-                    email: email
-                },
-                success: (response) => {
-                    //window.location.href = response.url;
-                },
-                error: (response) => {
-                    if (response.responseJSON.email) {
-                        window.email = $('input[name="email"]').parsley();
-                        window.email.addError('id-1', {
-                            message: response.responseJSON.email, assert: true, updateClass: true
-                        });
-                    }
+            let data = {
+                server: server,
+                privilege: privilege,
+                rate: rate,
+                nickname: nickname,
+                email: email
+            };
 
-                    if (response.responseJSON.nickname) {
-                        window.nickname = $('input[name="nickname"]').parsley();
-                        window.nickname.addError('id-1', {
-                            message: response.responseJSON.nickname, assert: true, updateClass: true
-                        });
-                    }
+            axios.post('/payment/redirect', data)
+                .then(r => {
+                    window.location.href = r.data.url;
+                }).catch(e => {
 
-                    $("a[href='#previous']").click();
+                    console.log(e.response);
+
+                if (e.response.responseJSON.email) {
+                    window.email = $('input[name="email"]').parsley();
+                    window.email.addError('id-1', {
+                        message: e.response.responseJSON.email, assert: true, updateClass: true
+                    });
                 }
+
+                if (e.response.responseJSON.nickname) {
+                    window.nickname = $('input[name="nickname"]').parsley();
+                    window.nickname.addError('id-1', {
+                        message: e.response.responseJSON.nickname, assert: true, updateClass: true
+                    });
+                }
+
+                $("a[href='#previous']").click();
             });
         },
     });

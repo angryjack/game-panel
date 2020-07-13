@@ -10,6 +10,7 @@
                 <input class="form-control" type="text" name="email" placeholder="Укажите почту"
                        value="{{ $form->user->email }}"
                        required>
+                @error('email')<div class="alert alert-danger">{{ $message }}</div>@enderror
             </div>
 
             <div class="form-group">
