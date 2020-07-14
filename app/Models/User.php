@@ -7,22 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class User
- * @property $id
- * @property $username
- * @property $password
- * @property $access
- * @property $flags
- * @property $steamid
- * @property $nickname
- * @property $icq
- * @property $ashow
- * @property $created
- * @property $expired
- * @property $days
- * @property $role
+ * @property $name
  * @property $email
  * @property $auth_key
- *
+ * @property $password
+ * @property $role
+ * @property $flags
+ * @property $steam_id
+ * @property $nickname
  */
 class User extends Model implements Authenticatable
 {
@@ -36,25 +28,15 @@ class User extends Model implements Authenticatable
     public const FLAG_NAME = 'a';
     public const FLAG_STEAM_ID = 'ce';
 
-    public $timestamps = false;
-    protected $table = 'amxadmins';
-
     protected $fillable = [
-        'id',
-        'username',
-        'password',
-        'access',
-        'flags',
-        'steamid',
-        'nickname',
-        'icq',
-        'ashow',
-        'created',
-        //'expired',
-        //'days',
-        'role',
+        'name',
         'email',
         'auth_key',
+        'password',
+        'role',
+        'flags',
+        'steam_id',
+        'nickname',
     ];
 
     protected $guarded = [
@@ -68,12 +50,8 @@ class User extends Model implements Authenticatable
 
     public function servers()
     {
-        return $this->belongsToMany(
-            Server::class,
-            'admins_servers',
-            'admin_id',
-            'server_id'
-        )->withPivot(['custom_flags', 'expire']);
+        return $this->belongsToMany(Server::class)
+            ->withPivot(['access', 'expire']);
     }
 
     /**

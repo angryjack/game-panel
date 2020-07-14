@@ -19,9 +19,9 @@
             <h3 class="signin-title-secondary">Войдите чтобы продолжить.</h3>
             <form action="{{ route('login') }}" method="post">
                 <div class="form-group">
-                    <input type="text" name="email" class="form-control" placeholder="Введите почту"
+                    <input type="text" name="login" class="form-control" placeholder="Введите логин"
                            required>
-                </div><!-- form-group -->
+                </div>
                 <div class="form-group mg-b-50">
                     <input type="password" name="password" class="form-control" placeholder="Введите пароль"
                            minlength="5"
@@ -29,7 +29,7 @@
                     <ul class="parsley-errors-list filled">
                         <li class="parsley-required tx-14 error-container"></li>
                     </ul>
-                </div><!-- form-group -->
+                </div>
                 <span class="do-login btn btn-primary btn-block btn-signin">Войти</span>
             </form>
         </div>

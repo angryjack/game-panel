@@ -19,15 +19,20 @@ Artisan::command('inspire', function () {
 })->describe('Display an inspiring quote');
 
 
-Artisan::command('user:create {user} {password}', function ($user, $password) {
+Artisan::command('user:create {user}', function ($user) {
+
+    $password = \Illuminate\Support\Str::random();
+
     \App\Models\User::create([
-        'username' => $user,
-        'email' => $user . '@example.com',
+        'name' => $user,
+        'email' => 'admin@local',
+        'auth_key' => md5($user),
         'password' => md5($password),
-        'access' => 'a',
-        'flags' => 'a',
-        'steamid' => 'STEAM_00',
-        'nickname' => $user,
         'role' => \App\Models\User::ROLE_ADMIN,
+        'flags' => 'a',
+        'steam_id' => 'STEAM_LOCAL',
+        'nickname' => 'NICKNAME',
     ]);
+
+    echo "Login: $user \nPass: $password\n";
 });

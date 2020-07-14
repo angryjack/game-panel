@@ -31,14 +31,6 @@ $router->group(['prefix' => 'payment'], function () use ($router) {
     $router->post('/redirect', 'PaymentController@redirect');
 });
 
-// баны
-$router->group(['prefix' => 'bans'], function () use ($router) {
-    $router->get('/', ['as' => 'bans', 'uses' => 'BanController@index']);
-    $router->post('search', ['as' => 'bans', 'uses' => 'BanController@search']);
-    $router->get('{id}', ['as' => 'bans.show', 'uses' => 'BanController@show']);
-    $router->get('edit/{id}', ['as' => 'bans.edit', 'middleware' => ['auth', 'role:' . User::ROLE_EDITOR], 'uses' => 'BanController@edit']);
-    $router->post('update', ['as' => 'bans.update', 'middleware' => ['auth', 'role:' . User::ROLE_EDITOR], 'uses' => 'BanController@update']);
-});
 
 // пользователи
 $router->group(['prefix' => 'users', 'middleware' => ['auth', 'role:' . User::ROLE_ADMIN]], function () use ($router) {

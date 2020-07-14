@@ -15,10 +15,10 @@ class LoginController extends Controller
 
     public function login(Login $request)
     {
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('login', 'password');
 
         $user = User
-            ::where('email', $credentials['email'])
+            ::where('name', $credentials['login'])
             ->where('password', md5($credentials['password']))
             ->first();
 
