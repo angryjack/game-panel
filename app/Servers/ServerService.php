@@ -36,17 +36,6 @@ class ServerService
     }
 
     /**
-     * Возвращает сервер по идентификатору.
-     *
-     * @param $id
-     * @return Server
-     */
-    public function getById($id): Server
-    {
-        return Server::findOrFail($id);
-    }
-
-    /**
      * Возвращает сервер с привилегиями.
      *
      * @param $id
@@ -54,25 +43,12 @@ class ServerService
      */
     public function getByIdWithPrivileges($id): Server
     {
-        //todo findOrFail
         return Server
             ::where('id', $id)
             ->with(['privileges' => function ($query) {
                 $query->where('status', 1);
             }])
             ->first();
-    }
-
-    public function store(Request $request)
-    {
-        $model = $this->getById($request->input('id'));
-        $model->hostname = $request->input('hostname');
-        $model->address = $request->input('address');
-        $model->description = $request->input('description');
-        $model->rules = $request->input('rules');
-        $model->save();
-
-        return $model;
     }
 
     /**
@@ -82,7 +58,10 @@ class ServerService
      */
     public function getAllWithPrivileges()
     {
-        return Server::with('privileges.rates')->get()->keyBy('id');
+        return Server
+            ::with('privileges.rates')
+            ->get()
+            ->keyBy('id');
     }
 
     /**

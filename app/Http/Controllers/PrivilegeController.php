@@ -34,7 +34,7 @@ class PrivilegeController extends Controller
 
     public function show($id)
     {
-        $model = $this->privilegeService->getById($id);
+        $model = $this->getById($id);
         return view('privilege.show', compact('model'));
     }
 
@@ -47,7 +47,7 @@ class PrivilegeController extends Controller
 
     public function edit($id)
     {
-        $model = $this->privilegeService->getById($id);
+        $model = $this->getById($id);
         $servers = $this->serverService->get();
         return view('privilege.edit', compact('model', 'servers'));
     }
@@ -59,6 +59,14 @@ class PrivilegeController extends Controller
         return redirect()->route('privileges.show', ['id' => $model->id]);
     }
 
+    public function delete($id)
+    {
+        $model = $this->getById($id);
+        $model->delete();
+
+        return redirect()->route('privileges');
+    }
+
     public function buy()
     {
         $servers = $this->serverService->getAllWithPrivileges();
@@ -68,19 +76,21 @@ class PrivilegeController extends Controller
     public function server($id)
     {
         $server = $this->serverService->getByIdWithPrivileges($id);
-        //fixme
         $server->description = Markdown::defaultTransform($server->description);
         return response()->json(compact('server'));
     }
 
     public function privilege($id)
     {
-        //todo выпилить, обрабатывать на фронте пришедшую ранее информацию.
-        $privilege = $this->privilegeService->getById($id);
-        //fixme
+        $privilege = $this->getById($id);
         $content = Markdown::defaultTransform($privilege->description);
         $terms = $privilege->rates;
 
         return response()->json(['terms' => $terms, 'content' => $content]);
+    }
+
+    private function getById($id): Privilege
+    {
+        return Privilege::findOrFail($id);
     }
 }

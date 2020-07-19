@@ -1,21 +1,20 @@
 @extends('layouts.app')
 
-@section('title', 'Редактировать пользователя')
+@section('title', 'Добавить сервер')
 
 @section('content')
     <div class="container">
         <div class="slim-pageheader">
             <ol class="breadcrumb slim-breadcrumb">
                 <li class="breadcrumb-item"><a href="/">Главная</a></li>
-                <li class="breadcrumb-item"><a href="/users">Пользователи</a></li>
-                <li class="breadcrumb-item active" aria-current="page">{{ $user->nickname }}</li>
+                <li class="breadcrumb-item"><a href="{{ route('servers') }}">Сервера</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Добавить сервер</li>
             </ol>
             <h6 class="slim-pagetitle">@yield('title')</h6>
         </div>
 
         <div class="section-wrapper">
-            @include('user.form')
+            @include('server.form')
         </div>
-
     </div>
 @endsection

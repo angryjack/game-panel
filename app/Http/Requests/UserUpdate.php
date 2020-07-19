@@ -15,14 +15,11 @@ class UserUpdate extends FormRequest
 
     public function rules()
     {
-        $model = new User();
+        $id = $this->input('id');
+        $model = User::findOrFail($id);
 
         return [
-            'steamid' => [
-                'required',
-                Rule::unique($model->getTable())->ignore($model),
-            ],
-            'nickname' => [
+            'name' => [
                 'required',
                 Rule::unique($model->getTable())->ignore($model),
             ],
@@ -31,6 +28,17 @@ class UserUpdate extends FormRequest
                 Rule::unique($model->getTable())->ignore($model),
             ],
             'auth_key' => 'required|min:15',
+            'steam_id' => [
+                'required',
+                Rule::unique($model->getTable())->ignore($model),
+            ],
+            'nickname' => [
+                'required',
+                Rule::unique($model->getTable())->ignore($model),
+            ],
+            'role' => 'required',
+            'flags' => 'required',
+            'password' => 'nullable|min:6',
         ];
     }
 

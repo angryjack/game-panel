@@ -25,11 +25,6 @@ class PrivilegeService
         return $list;
     }
 
-    public function getById($id)
-    {
-        return Privilege::findOrFail($id);
-    }
-
     public function getServerPrivileges(Server $server)
     {
         return $server->privileges()->where('status', 1)->get();

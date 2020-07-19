@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserCreate;
-use App\Models\UserForm;
+use App\Http\Requests\UserUpdate;
+use App\Models\User;
+use App\Services\ServerService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 
@@ -14,47 +16,76 @@ class UserController extends Controller
      */
     private $userService;
 
-    public function __construct(UserService $userService)
+    /**
+     * @var ServerService
+     */
+    private $serverService;
+
+    public function __construct(UserService $userService, ServerService $serverService)
     {
         $this->userService = $userService;
+        $this->serverService = $serverService;
     }
 
     public function index(Request $request)
     {
-        $list = $this->userService->search($request);
+        $search = $request->input('search');
+        $list = $this->userService->search($search);
         return view('user.index', compact('list'));
     }
 
     public function show($id)
     {
         $model = $this->userService->getWithServers($id);
-        return view('user.show', compact('model' ));
+        return view('user.show', compact('model'));
     }
 
     public function create()
     {
-        $form = new UserForm();
-        return view('user.create', compact('form'));
+        $user = new User();
+        $servers = $this->serverService->getAllWithPrivileges();
+        return view('user.create', compact('user', 'servers'));
     }
 
     public function edit($id)
     {
-        $model = $this->userService->getById($id);
-        $form = new UserForm($model);
-        return view('user.edit', compact('form'));
+        $user = $this->getById($id);
+
+        $servers = $this->serverService->getAllWithPrivileges();
+        $userPrivileges = $user->servers;
+        foreach ($servers as $index => $server) {
+            if ($userPrivileges->contains($server)) {
+                $servers[$index] = $userPrivileges->find($server->id);
+            }
+
+        }
+
+        return view('user.edit', compact('user', 'servers'));
     }
 
     public function store(UserCreate $request)
     {
-        $model = $this->userService->store($request->all());
+        $model = $this->userService->create($request->all());
+        return redirect()->route('users.show', ['id' => $model->id]);
+    }
+
+    public function update(UserUpdate $request)
+    {
+        $id = $request->input('id');
+        $model = $this->userService->update($this->getById($id), $request->all());
         return redirect()->route('users.show', ['id' => $model->id]);
     }
 
     public function delete($id)
     {
-        $model = $this->userService->getById($id);
-        $this->userService->delete($model);
+        $model = $this->getById($id);
+        $model->delete();
 
-        return redirect()->route('users');
+        return redirect()->route('servers');
+    }
+
+    private function getById(int $id): User
+    {
+        return User::findOrFail($id);
     }
 }

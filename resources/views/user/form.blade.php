@@ -1,93 +1,143 @@
-<form action="{{ route('users.store') }}" method="post">
+<form action="{{ $user->id ? route('users.update') : route('users.store') }}" method="post">
     @csrf
-    @if($form->user->id)
-        <input type="text" name="id" value="{{ $form->user->id }}" hidden>
+    @if($user->id)
+        <input type="text" name="id" value="{{ $user->id }}" hidden>
     @endif
+
     <div class="row">
         <div class="col-md-6 col-lg-4">
             <div class="form-group">
-                <label class="form-control-label">Почта: <span class="tx-danger">*</span></label>
-                <input class="form-control" type="text" name="email" placeholder="Укажите почту"
-                       value="{{ $form->user->email }}"
-                       required>
-                @error('email')<div class="alert alert-danger">{{ $message }}</div>@enderror
-            </div>
-
-            <div class="form-group">
-                <label class="form-control-label">Логин: <span class="tx-danger">*</span></label>
-                <input class="form-control" type="text" name="nickname" placeholder="Укажите логин"
-                       value="{{ $form->user->nickname }}"
-                       required>
-            </div>
-
-            <div class="form-group">
-                <label class="form-control-label">Пароль: @if(!$form->user->id)<span class="tx-danger">*</span> @endif
+                <label class="form-control-label">
+                    Почта: <span class="tx-danger">*</span>
                 </label>
-                <input class="form-control" type="text" name="password" placeholder="Укажите пароль"
-                       value="{{ $form->user->password }}"
-                       @if(!$form->user->id)
-                       required
-                    @endif
-                >
+                <input class="form-control"
+                       type="email"
+                       name="email"
+                       placeholder="Укажите почту"
+                       value="{{ old('email', $user->email ) }}"
+                       required>
+                @error('email')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                <label class="form-control-label">
+                    Логин: <span class="tx-danger">*</span>
+                </label>
+                <input class="form-control"
+                       type="text"
+                       name="name"
+                       placeholder="Укажите логин"
+                       value="{{ old('name', $user->name) }}"
+                       required>
+                @error('name')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                <label class="form-control-label">
+                    Пароль: @if(!$user->id)<span class="tx-danger">*</span> @endif
+                </label>
+                <input class="form-control"
+                       type="password"
+                       name="password"
+                       value="{{ old('password') }}"
+                       placeholder="Укажите пароль"
+                       @if(!$user->id) required @endif>
+                @error('password')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-group">
                 <label class="form-control-label">Права:</label>
-                <select class="form-control select2-show-search select2-hidden-accessible" name="role" required>
-                    @foreach($form->user->role_list as $value => $title)
-                        <option value="{{ $value }}"
-                                @if(($form->user->id && $value === $form->user->role) ||
-                                    $value === $form->user::ROLE_USER) selected @endif
-                        >{{ $title }}</option>
+                <select class="form-control select2-show-search select2-hidden-accessible"
+                        name="role"
+                        required>
+                    @foreach($user->role_list as $value => $title)
+                        <option value="{{ $value }}">
+                            {{ $title }}
+                        </option>
                     @endforeach
                 </select>
+                @error('role')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-group">
-                <label class="form-control-label">Уникальная ссылка: <span class="tx-danger">*</span></label>
+                <label class="form-control-label">
+                    Уникальная ссылка: <span class="tx-danger">*</span>
+                </label>
 
                 <div class="input-group">
                     <div class="input-group-prepend refresh-key">
                         <span class="input-group-text"><i class="icon ion-refresh tx-16 lh-0 op-6"></i></span>
                     </div>
-                    <input class="form-control" type="text" name="auth_key" placeholder="Укажите ссылку"
-                           value="{{ $form->user->auth_key ?? \Illuminate\Support\Str::random(25) }}" readonly>
+                    <input class="form-control"
+                           type="text"
+                           name="auth_key"
+                           placeholder="Укажите ссылку"
+                           value="{{ old('auth_key', $user->auth_key ?? \Illuminate\Support\Str::random(25)) }}"
+                           readonly>
+                    @error('auth_key')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
         </div>
         <div class="col-md-6 col-lg-4">
             <div class="form-group">
                 <label class="form-control-label">Тип админки:</label>
-                <select class="form-control select2-show-search select2-hidden-accessible" name="flags" required>
-                    @foreach($form->user->flag_list as $value => $title)
-                        <option value="{{ $value }}"
-                                @if(($form->user->id && $value === $form->user->flags) ||
-                               $value === $form->user->flags) selected @endif
-                        >{{ $title }}</option>
+                <select class="form-control select2-show-search select2-hidden-accessible"
+                        name="flags"
+                        required>
+                    @foreach($user->flag_list as $value => $title)
+                        <option value="{{ $value }}">
+                            {{ $title }}
+                        </option>
                     @endforeach
                 </select>
+                @error('flag_list')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-group">
-                <label class="form-control-label">Steam ID / IP / Ник: <span
+                <label class="form-control-label">Steam ID<span
                         class="tx-danger">*</span></label>
-                <input class="form-control" type="text" name="steamid" placeholder="Введите Steam ID или Ник:"
-                       value="{{ $form->user->steamid }}"
+                <input class="form-control"
+                       type="text"
+                       name="steam_id"
+                       placeholder="Введите Steam ID"
+                       value="{{ old('steam_id', $user->steam_id) }}"
                        required>
+                @error('steam_id')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-group">
-                <label class="form-control-label">Флаги доступа на всех серверах:</label>
-                <input class="form-control" type="text" name="access" placeholder="Введите флаги доступа"
-                       value="{{ $form->user->access }}"
-                >
+                <label class="form-control-label">Ник: <span
+                        class="tx-danger">*</span></label>
+                <input class="form-control"
+                       type="text"
+                       name="nickname"
+                       placeholder="Введите Ник:"
+                       value="{{ old('nickname', $user->nickname) }}"
+                       required>
+                @error('nickname')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
             </div>
-
         </div>
+
         <div class="col-md-6 col-lg-4">
             <div class="form-group">
                 <label class="form-control-label">Услуги на серверах:</label>
-                @foreach($form->servers as $server)
+                @foreach($servers as $server)
                     <label class="ckbox">
                         <input type="checkbox"
                                name="servers[{{ $server->id }}][on]"
@@ -107,10 +157,10 @@
                             <div class="form-group">
                                 <label class="form-control-label">Флаги доступа:</label>
                                 <select class="form-control select2-show-search select2-hidden-accessible"
-                                        name="servers[{{ $server->id }}][custom_flags]">
+                                        name="servers[{{ $server->id }}][access]">
                                     @forelse($server->privileges as $privilege)
                                         <option value="{{ $privilege->flags }}"
-                                                @if($server->pivot && $server->pivot->custom_flags === $privilege->flags)
+                                                @if($server->pivot && $server->pivot->access === $privilege->flags)
                                                 selected
                                             @endif
                                         >{{ $privilege->title }}</option>
@@ -161,9 +211,12 @@
         <div class="col-sm-3 col-md-2 mb-3">
             <button type="submit" class="btn btn-teal btn-block">Сохранить</button>
         </div>
-        @if($form->user->id)
+        @if($user->id)
             <div class="col-sm-3 col-md-2">
-                <a href="{{ route('users.delete', ['id' => $form->user->id]) }}" class="btn btn-danger btn-block">Удалить</a>
+                <a href="{{ route('users.delete', ['id' => $user->id]) }}"
+                   class="btn btn-danger btn-block">
+                    Удалить
+                </a>
             </div>
         @endif
     </div>

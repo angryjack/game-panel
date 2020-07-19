@@ -15,38 +15,85 @@ use Illuminate\Validation\Rule;
 
 class UserService
 {
+    public function create(array $data): User
+    {
+        $user = new User($data);
+        $user->save();
+
+        if ($data['servers']) {
+            $this->setPrivileges($user, $data);
+        }
+
+        return $user;
+    }
+
+    public function update(User $user, array $data): User
+    {
+        foreach ($data as $key => $value) {
+            if ($value === null) {
+                unset($data[$key]);
+            }
+        }
+
+        if (Auth::id() === $user->id) {
+            // запрещаем менять себе роль
+            unset($data['role']);
+        }
+
+        $user->update($data);
+
+        if ($data['servers']) {
+            $this->setPrivileges($user, $data);
+        }
+
+        return $user;
+    }
+
+    private function setPrivileges(User $user, $data)
+    {
+        $privilegesOnServers = [];
+        foreach ($data['servers'] as $serverId => $params) {
+            if (!isset($params['on'])) {
+                continue;
+            }
+            if (isset($params['forever']) || !isset($params['expire'])) {
+                $expire = null;
+            } else {
+                $expire = date('Y-m-d H:i:s', strtotime($params['expire']));
+            }
+
+            $privilegesOnServers[$serverId] = [
+                'access' => $params['access'],
+                'expire' => $expire,
+            ];
+        }
+
+        $user->servers()->sync($privilegesOnServers);
+    }
+
+
     /**
      * Ищет пользователей.
      *
-     * @param Request $request
+     * @param string $search
      * @return mixed
      */
-    public function search(Request $request)
+    public function search($search)
     {
-        $search = $request->input('search');
-
         $list = User
             ::when($search, function ($query, $search) {
                 return $query
-                    ->where('username', 'like', "%$search%")
-                    ->orWhere('steamid', 'like', "%$search%")
+                    ->where('name', 'like', "%$search%")
+                    ->orWhere('email', 'like', "%$search%")
+                    ->orWhere('steam_id', 'like', "%$search%")
                     ->orWhere('nickname', 'like', "%$search%");
             })
-            ->orderBy('id', 'desc')->paginate(50);
+            ->orderBy('id', 'desc')
+            ->paginate(50);
 
         return $list;
     }
 
-    /**
-     * Возвращает пользователя по идентификатору.
-     *
-     * @param $id
-     * @return mixed
-     */
-    public function getById($id)
-    {
-        return User::findOrFail($id);
-    }
 
     /**
      * Возвращает пользователя с услугами.
@@ -209,9 +256,6 @@ class UserService
 
         // binding values
         $model->fill($data);
-
-        $model->days = 0;
-        $model->expired = 0;
         $model->username = $model->nickname;
 
         $password = trim($data['password'], '');
@@ -247,18 +291,6 @@ class UserService
         $model->servers()->sync($privilegesOnServers);
 
         return $model;
-    }
-
-    /**
-     * Удаляет пользователя.
-     *
-     * @param User $user
-     * @return bool|null
-     * @throws \Exception
-     */
-    public function delete(User $user)
-    {
-        return $user->delete();
     }
 
     /**

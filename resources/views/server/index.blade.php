@@ -13,6 +13,12 @@
         </div>
 
         <div class="row">
+            <div class="col-sm-6 col-md-3 mg-b-10">
+                <a class="btn btn-teal btn-block" href="{{ route('servers.create') }}">Добавить</a>
+            </div>
+        </div>
+
+        <div class="row">
             @foreach($list as $server)
                 <div class="col-lg-6 mb-4">
                     <div class="card card-profile">
@@ -26,7 +32,9 @@
 {{--								@endif--}}
                                 <div class="media-body">
                                     <h3 class="card-profile-name">
-                                        <a class="text-dark" href="/servers/{{ $server->id }}">{{ $server->hostname }}</a>
+                                        <a class="text-dark" href="{{ route('servers.show', ['id' => $server->id]) }}">
+                                            {{ $server->hostname }}
+                                        </a>
                                     </h3>
                                     <p class="mb-1">{{ $server->address }}</p>
 {{--                                    <b>Онлайн: {{ $server->info['Players'] }}/{{ $server->info['MaxPlayers'] }}</b>--}}

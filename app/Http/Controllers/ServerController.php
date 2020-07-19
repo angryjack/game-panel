@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ServerStore;
+use App\Models\Server;
 use App\Services\ServerService;
-use Illuminate\Http\Request;
 
 class ServerController extends Controller
 {
@@ -24,7 +25,7 @@ class ServerController extends Controller
 
     public function info($id)
     {
-        $server = $this->serverService->getById($id);
+        $server = $this->getById($id);
         return $this->serverService->getSourceQueryInformation($server);
     }
 
@@ -42,9 +43,18 @@ class ServerController extends Controller
      */
     public function show($id)
     {
-        $server = $this->serverService->getById($id);
-        $model = $this->serverService->getWithInformation($server);
+        $model = $this->getById($id);
+        //$model = $this->serverService->getWithInformation($server);
         return view('server.show', compact('model'));
+    }
+
+    /**
+     * Конкретный сервер.
+     */
+    public function create()
+    {
+        $model = new Server();
+        return view('server.create', compact('model'));
     }
 
     /**
@@ -52,16 +62,48 @@ class ServerController extends Controller
      */
     public function edit($id)
     {
-        $model = $this->serverService->getById($id);
+        $model = $this->getById($id);
         return view('server.edit', compact('model'));
     }
 
     /**
      * Форма редактирования информации о сервере.
      */
-    public function store(Request $request)
+    public function store(ServerStore $request)
     {
-        $model = $this->serverService->store($request);
-        return redirect()->route('server.show', ['id' => $model->id]);
+        $data = $request->validated();
+
+        $id = $request->input('id');
+        if ($id) {
+            $model = Server::findOrFail($id);
+        } else {
+            $model = new Server();
+        }
+        $model->fill($data);
+        $model->save();
+
+        $model->load('privileges');
+
+        return view('server.show', compact('model'));
     }
+
+    public function delete($id)
+    {
+        $model = $this->getById($id);
+        $model->delete($id);
+
+        return redirect()->route('servers');
+    }
+
+    /**
+     * Возвращает сервер по идентификатору.
+     *
+     * @param $id
+     * @return Server
+     */
+    private function getById($id): Server
+    {
+        return Server::findOrFail($id);
+    }
+
 }

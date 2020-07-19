@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class User
+ * @property $id
  * @property $name
  * @property $email
  * @property $auth_key
@@ -59,7 +60,8 @@ class User extends Model implements Authenticatable
      * @param $role
      * @return bool
      */
-    public function hasRole($role) {
+    public function hasRole($role)
+    {
         // для владельца доступно все
         return $this->role === self::ROLE_OWNER || $this->role === $role;
     }
@@ -94,10 +96,13 @@ class User extends Model implements Authenticatable
     {
         $privileges = [];
         foreach ($this->servers as $server) {
-            $privilege = Privilege::where([
-                ['server_id', $server->id],
-                ['flags', $server->pivot->custom_flags],
-            ])->with('rates')->first();
+            $privilege = Privilege
+                ::where([
+                    ['server_id', $server->id],
+                    ['flags', $server->pivot->access],
+                ])
+                ->with('rates')
+                ->first();
 
             if ($server->pivot->expire === null) {
                 $expire = 'Навсегда';

@@ -17,11 +17,14 @@ class UserCreate extends FormRequest
         $model = new User();
 
         return [
-            'steamid' => 'required|unique:' . $model->getTable() . ',steamid',
-            'nickname' => 'required|unique:' . $model->getTable() . ',nickname',
+            'name' => 'required|unique:' . $model->getTable() . ',name',
             'email' => 'required|email|unique:' . $model->getTable() . ',email',
-            'password' => 'required|min:6',
+            'steam_id' => 'required|unique:' . $model->getTable() . ',steam_id',
+            'nickname' => 'required|unique:' . $model->getTable() . ',nickname',
             'auth_key' => 'required|min:15',
+            'password' => 'required|min:6',
+            'role' => 'required',
+            'flags' => 'required',
         ];
     }
 
