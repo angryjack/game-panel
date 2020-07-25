@@ -30,7 +30,7 @@ class LoginController extends Controller
         }
 
         $validator = Validator::make([], []);
-        $validator->getMessageBag()->add('password', 'Password wrong');
+        $validator->getMessageBag()->add('password', 'Неправильный пароль.');
         return Redirect::back()->withErrors($validator)->withInput();
     }
 

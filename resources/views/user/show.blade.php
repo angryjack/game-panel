@@ -23,8 +23,8 @@
                 <div class="col-md-6 col-lg-4">
                     <ul class="list-group mb-3">
                         <li class="list-group-item">
-                            <p class="mg-b-0"><strong class="tx-inverse tx-medium">Логин</strong>
-                                <span class="text-muted">{{ $model->nickname }}</span>
+                            <p class="mg-b-0"><strong class="tx-inverse tx-medium">Логин (использовать для входа)</strong>
+                                <span class="text-muted">{{ $model->name }}</span>
                             </p>
                         </li>
                         <li class="list-group-item">
@@ -34,7 +34,7 @@
                         </li>
                         <li class="list-group-item">
                             <p class="mg-b-0"><strong class="tx-inverse tx-medium">Роль</strong>
-                                <span class="text-muted">{{ $model->role_list[$model->role] }}</span>
+                                <span class="text-muted">{{ $model->role_list[$model->role] ?? null }}</span>
                             </p>
                         </li>
                         <li class="list-group-item">
@@ -43,11 +43,6 @@
                             </p>
                         </li>
 
-                        <li class="list-group-item">
-                            <p class="mg-b-0"><strong class="tx-inverse tx-medium">Флаги доступа</strong>
-                                <span class="text-muted">{{ $model->access }}</span>
-                            </p>
-                        </li>
                         <li class="list-group-item">
                             <p class="mg-b-0"><strong class="tx-inverse tx-medium">Доступ</strong>
                                 <span class="text-muted">
@@ -60,8 +55,13 @@
                             </p>
                         </li>
                         <li class="list-group-item">
-                            <p class="mg-b-0"><strong class="tx-inverse tx-medium">Ник / SteamID / IP</strong>
-                                <span class="text-muted">{{ $model->steamid }}</span>
+                            <p class="mg-b-0"><strong class="tx-inverse tx-medium">Ник</strong>
+                                <span class="text-muted">{{ $model->nickname }}</span>
+                            </p>
+                        </li>
+                        <li class="list-group-item">
+                            <p class="mg-b-0"><strong class="tx-inverse tx-medium">Steam ID</strong>
+                                <span class="text-muted">{{ $model->steam_id }}</span>
                             </p>
                         </li>
                     </ul>

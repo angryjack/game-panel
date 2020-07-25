@@ -18,6 +18,7 @@ class UserService
     public function create(array $data): User
     {
         $user = new User($data);
+        $user->password = md5($data['password']);
         $user->save();
 
         if ($data['servers']) {
@@ -33,6 +34,10 @@ class UserService
             if ($value === null) {
                 unset($data[$key]);
             }
+        }
+
+        if (isset($data['password'])) {
+            $data['password'] = md5($data['password']);
         }
 
         if (Auth::id() === $user->id) {

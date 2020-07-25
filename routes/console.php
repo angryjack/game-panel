@@ -25,13 +25,13 @@ Artisan::command('user:create {user}', function ($user) {
 
     \App\Models\User::create([
         'name' => $user,
-        'email' => 'admin@local',
-        'auth_key' => md5($user),
+        'email' => "$user@local",
+        'auth_key' => \Illuminate\Support\Str::random(),
         'password' => md5($password),
         'role' => \App\Models\User::ROLE_ADMIN,
         'flags' => 'a',
-        'steam_id' => 'STEAM_LOCAL',
-        'nickname' => 'NICKNAME',
+        'steam_id' => 'STEAM_' . $user,
+        'nickname' => 'NICKNAME_' . $user,
     ]);
 
     echo "Login: $user \nPass: $password\n";
