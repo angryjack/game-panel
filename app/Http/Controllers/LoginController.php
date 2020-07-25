@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Login;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
@@ -24,10 +26,12 @@ class LoginController extends Controller
 
         if ($user) {
             Auth::login($user, true);
-            return true;
+            return redirect()->route('home');
         }
 
-        return redirect()->route('home');
+        $validator = Validator::make([], []);
+        $validator->getMessageBag()->add('password', 'Password wrong');
+        return Redirect::back()->withErrors($validator)->withInput();
     }
 
     public function logout()

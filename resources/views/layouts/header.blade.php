@@ -24,7 +24,7 @@
                             <a href="{{ route('profile') }}" class="nav-link"><i class="icon ion-person"></i>Профиль</a>
                             <a href="{{ route('logout') }}" class="nav-link"><i class="icon ion-forward"></i>Выйти</a>
                         @else
-                            <a href="{{ route('login') }}" class="nav-link"><i class="icon ion-log-in"></i>Войти</a>
+                            <a href="{{ route('login.page') }}" class="nav-link"><i class="icon ion-log-in"></i>Войти</a>
                         @endif
                     </nav>
                 </div><!-- dropdown-menu -->

@@ -8,4 +8,9 @@ class SiteController extends Controller
     {
         return view('site.index');
     }
+
+    public function contacts()
+    {
+        return view('site.contacts');
+    }
 }

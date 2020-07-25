@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProfileUpdate;
 use App\Services\UserService;
-use Illuminate\Http\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProfileController
 {
@@ -18,19 +17,15 @@ class ProfileController
         $this->userService = $userService;
     }
 
-    public function profile()
+    public function index()
     {
-        $model = $this->userService->getUserByAuth();
-        if ($model === null) {
-            throw new NotFoundHttpException('Необходимо авторизоваться.');
-        }
-
-        return view('profile.show', compact('model'));
+        //todo подгрузить с привилегиями
+        return view('profile.show', ['model' => $this->userService->getUserByAuth()]);
     }
 
-    public function updateProfile(Request $request)
+    public function update(ProfileUpdate $request)
     {
-        $model = $this->userService->updateProfile($request);
+        $model = $this->userService->updateProfile($request->validated());
         return view('profile.show', compact('model'));
     }
 

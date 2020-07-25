@@ -8,24 +8,15 @@ use App\Models\User;
 //Route::group(['middleware' => ['auth', 'role:admin']], function () {});
 //Route::prefix('/user')->group(function () {});
 
-
-//Сайт
-$router->get('/', 'SiteController@index')->name('home');
-
 //Вход-выход
-$router->get('login', 'LoginController@loginPage')->name('login');
+$router->get('login', 'LoginController@loginPage')->name('login.page');
 $router->post('login', 'LoginController@login')->name('login');
 $router->get('logout', 'LoginController@logout')->name('logout');
 
 // профиль
-$router->group(['prefix' => 'profile'], function () use ($router) {
-    $router->get('/', 'ProfileController@profile')
-        ->middleware('auth')
-        ->name('profile');
-    $router->get('/auth', 'SiteController@auth');
-    $router->post('/update', 'ProfileController@updateProfile')
-        ->middleware('auth')
-        ->name('profile.update');
+$router->group(['prefix' => 'profile', 'middleware' => ['auth']], function () use ($router) {
+    $router->get('/', 'ProfileController@index')->name('profile');
+    $router->post('update', 'ProfileController@update')->name('profile.update');
 });
 
 // оплата
@@ -77,3 +68,7 @@ $router->group(['prefix' => 'servers'], function () use ($router) {
 
 // пожертвования
 $router->get('donations', 'DonationController@index')->name('donations');
+$router->get('contacts', 'SiteController@contacts')->name('contacts');
+
+//Сайт
+$router->get('/', 'SiteController@index')->name('home');

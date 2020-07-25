@@ -27,7 +27,7 @@ class User extends Model implements Authenticatable
     public const ROLE_OWNER = 'owner';
 
     public const FLAG_NAME = 'a';
-    public const FLAG_STEAM_ID = 'ce';
+    public const FLAG_STEAM_ID = 'ca';
 
     protected $fillable = [
         'name',
@@ -74,7 +74,7 @@ class User extends Model implements Authenticatable
     {
         return [
             self::FLAG_NAME => 'Ник + Пароль',
-            self::FLAG_STEAM_ID => 'Steam ID',
+            self::FLAG_STEAM_ID => 'Steam ID + Пароль',
         ];
     }
 

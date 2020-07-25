@@ -44,10 +44,8 @@
 <script src="/js/libs/ru.js"></script>
 
 <script src="/js/components/BuyPrivilege.js"></script>
-<script src="/js/components/Signin.js"></script>
 <script src="/js/components/User.js"></script>
 <script src="/js/components/Donation.js"></script>
-<script src="/js/components/Profile.js"></script>
 <script src="/js/components/Users.js"></script>
 <script src="/js/dashboard.js"></script>
 <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>

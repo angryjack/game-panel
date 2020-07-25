@@ -12,24 +12,20 @@
             <h6 class="slim-pagetitle">@yield('title')</h6>
         </div>
 
-        <div class="row">
-            <div class="col-sm-6 col-md-3 mg-b-10">
-                <a class="btn btn-teal btn-block" href="{{ route('servers.create') }}">Добавить</a>
+        @if(auth()->user() !== null && auth()->user()->hasRole('admin'))
+            <div class="row">
+                <div class="col-sm-6 col-md-3 mg-b-10">
+                    <a class="btn btn-teal btn-block" href="{{ route('servers.create') }}">Добавить</a>
+                </div>
             </div>
-        </div>
+        @endif
 
         <div class="row">
             @foreach($list as $server)
                 <div class="col-lg-6 mb-4">
                     <div class="card card-profile">
                         <div class="card-body">
-                            <div class="media">
-{{--                                @if ($server->info['Map'] === 'nomap')--}}
-{{--									<img src="{{URL::asset('images/nomap.jpg')}}" width="120" height="120">--}}
-{{--								@else--}}
-{{--									<img src="https://image.gametracker.com/images/maps/160x120/cs/{{ $server->info['Map'] }}.jpg"--}}
-{{--                                     width="120" height="120">--}}
-{{--								@endif--}}
+                            <div class="media d-flex align-items-center">
                                 <div class="media-body">
                                     <h3 class="card-profile-name">
                                         <a class="text-dark" href="{{ route('servers.show', ['id' => $server->id]) }}">
@@ -37,40 +33,14 @@
                                         </a>
                                     </h3>
                                     <p class="mb-1">{{ $server->address }}</p>
-{{--                                    <b>Онлайн: {{ $server->info['Players'] }}/{{ $server->info['MaxPlayers'] }}</b>--}}
                                 </div>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <div class="list-group list-group-flush w-100">
-                                <div class="list-group-item bg-gray-200">
-                                    <div class="media">
-                                        <div class="media-body ml-0 d-flex">
-                                            <b>Игрок</b>
-                                            <b class="ml-auto w-25 text-right">Убийств</b>
-                                            <b class="w-25 text-right">Время</b>
-                                        </div>
+                                <div class="media-body">
+                                    <div class="col-sm-12">
+                                        <a class="btn btn-warning btn-block" href="{{ route('servers.edit', ['id' => $server->id]) }}">
+                                            Редактировать
+                                        </a>
                                     </div>
                                 </div>
-{{--                                @forelse($server->players as $player)--}}
-{{--                                    <div class="list-group-item">--}}
-{{--                                        <div class="media">--}}
-{{--                                            <div class="media-body ml-0 d-flex">--}}
-{{--                                                <b>{{ $player['Name'] }}</b>--}}
-{{--                                                <span class="ml-auto w-25 text-right">{{ $player['Frags'] }}</span>--}}
-{{--                                                <span class="w-25 text-right">{{ $player['TimeF'] }}</span>--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                @empty--}}
-{{--                                    <div class="list-group-item">--}}
-{{--                                        <div class="media">--}}
-{{--                                            <div class="media-body ml-0 d-flex">--}}
-{{--                                                <b>Игроков нет.</b>--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                @endforelse--}}
                             </div>
                         </div>
                     </div>

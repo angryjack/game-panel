@@ -57,7 +57,7 @@
                         name="role"
                         required>
                     @foreach($user->role_list as $value => $title)
-                        <option value="{{ $value }}">
+                        <option value="{{ $value }}" @if($user->role === $value) selected @endif>
                             {{ $title }}
                         </option>
                     @endforeach
@@ -95,7 +95,7 @@
                         name="flags"
                         required>
                     @foreach($user->flag_list as $value => $title)
-                        <option value="{{ $value }}">
+                        <option value="{{ $value }}" @if($user->flags === $value) selected @endif>
                             {{ $title }}
                         </option>
                     @endforeach

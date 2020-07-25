@@ -1,18 +1,11 @@
 @php
 
-    use Illuminate\Support\Facades\Request;
-
     $menu = [
         [
             'href' => '',
             'title' => 'Главная',
             'icon' => 'home'
         ],
-        /*[
-            'href' => 'bans',
-            'title' => 'Бан-лист',
-            'icon' => 'list'
-        ],*/
         [
             'href' => 'users',
             'title' => 'Пользователи',
@@ -27,13 +20,19 @@
         [
             'href' => 'servers',
             'title' => 'Сервера',
-            'icon' => 'game-controller-b'
+            'icon' => 'game-controller-b',
+            'role' => \App\Models\User::ROLE_ADMIN,
         ],
         [
             'href' => 'privileges',
             'title' => 'Привилегии',
             'icon' => 'gear',
             'role' => \App\Models\User::ROLE_ADMIN,
+        ],
+        [
+            'href' => 'contacts',
+            'title' => 'Контакты',
+            'icon' => 'contact',
         ],
     ];
 

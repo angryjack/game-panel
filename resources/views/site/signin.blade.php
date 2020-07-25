@@ -18,19 +18,29 @@
             <h2 class="signin-title-primary">С Возвращением!</h2>
             <h3 class="signin-title-secondary">Войдите чтобы продолжить.</h3>
             <form action="{{ route('login') }}" method="post">
+                @csrf
                 <div class="form-group">
-                    <input type="text" name="login" class="form-control" placeholder="Введите логин"
+                    <input type="text"
+                           name="login"
+                           class="form-control"
+                           placeholder="Введите логин"
+                           value="{{ old('login') }}"
                            required>
+                    @error('login')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="form-group mg-b-50">
                     <input type="password" name="password" class="form-control" placeholder="Введите пароль"
                            minlength="5"
                            required>
-                    <ul class="parsley-errors-list filled">
-                        <li class="parsley-required tx-14 error-container"></li>
-                    </ul>
+                    @error('password')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </div>
-                <span class="do-login btn btn-primary btn-block btn-signin">Войти</span>
+                <button type="submit" class="btn btn-primary btn-block btn-signin">
+                    Войти
+                </button>
             </form>
         </div>
 

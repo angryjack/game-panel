@@ -88,25 +88,7 @@
                 </div>
 
                 <div class="card mt-3">
-                    <div class="card-body pd-30 update-profile-form" data-action="{{ route('profile.update') }}">
-                        <h6 class="slim-card-title">Обновить информацию</h6>
-
-                        <div class="form-group">
-                            <label class="form-control-label">Steam ID / IP / Ник</label>
-                            <input type="text" name="nickname" class="form-control" value="{{ $model->steamid }}" required>
-                            <p class="errors parsley-errors-list mt-2"></p>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-control-label">Новый пароль (Вводить без setinfo _pw)</label>
-                            <input type="text" name="password" class="form-control">
-                            <p class="errors parsley-errors-list mt-2"></p>
-                        </div>
-
-                        <div class="mg-t-30">
-                            <button class="btn btn-primary pd-x-20 do-update">Сохранить</button>
-                        </div>
-                    </div><!-- card-body -->
+                    @include('profile.form')
                 </div>
             </div>
         </div>

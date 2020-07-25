@@ -71,6 +71,33 @@ class UserService
         $user->servers()->sync($privilegesOnServers);
     }
 
+    /**
+     * Обновление профиля пользователя.
+     *
+     * @param array $data
+     * @return User
+     */
+    public function updateProfile(array $data)
+    {
+        /** @var User $model */
+        $model = Auth::user();
+
+        if (isset($data['nickname'])) {
+            $model->nickname = $data['nickname'];
+        }
+
+        if (isset($data['steam_id'])) {
+            $model->steam_id = $data['steam_id'];
+        }
+
+        if (isset($data['password']) && $data['password']) {
+            $model->password = md5($data['password']);
+        }
+
+        $model->save();
+
+        return $model;
+    }
 
     /**
      * Ищет пользователей.
@@ -289,45 +316,6 @@ class UserService
         }
 
         $model->servers()->sync($privilegesOnServers);
-
-        return $model;
-    }
-
-    /**
-     * Обновление профиля пользователя.
-     *
-     * @param Request $request
-     * @return User
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function updateProfile(Request $request)
-    {
-        /** @var User $model */
-        $model = $this->getUserByAuth();
-
-        $messages = [
-            'nickname.unique' => 'Данный ник уже используется другим игроком.',
-            'nickname.required' => 'Необходимо указать ник.',
-            'password.min' => 'Минимальная длина пароля 6 символов.'
-        ];
-
-        $validationRules = [
-            'nickname' => [
-                'required',
-                Rule::unique($model->getTable())->ignore($model),
-            ],
-            'password' => 'sometimes|min:6'
-        ];
-
-        $this->validate($request, $validationRules, $messages);
-
-        $model->nickname = $model->steamid = $model->username = $request->input('nickname');
-        $newPassword = trim($request->input('password'));
-
-        if (strlen($newPassword) >= 6) {
-            $model->password = md5($newPassword);
-        }
-        $model->save();
 
         return $model;
     }
