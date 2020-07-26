@@ -12,11 +12,16 @@
             'icon' => 'people',
             'role' => \App\Models\User::ROLE_ADMIN
         ],
-        /*[
+        [
+            'href' => 'privileges/buy',
+            'title' => 'Магазин',
+            'icon' => 'tennisball',
+        ],
+        [
             'href' => 'donations',
             'title' => 'Пожертвования',
             'icon' => 'heart'
-        ],*/
+        ],
         [
             'href' => 'servers',
             'title' => 'Сервера',

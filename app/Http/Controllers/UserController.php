@@ -81,7 +81,7 @@ class UserController extends Controller
         $model = $this->getById($id);
         $model->delete();
 
-        return redirect()->route('servers');
+        return redirect()->route('users');
     }
 
     private function getById(int $id): User
